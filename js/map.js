@@ -6,6 +6,7 @@
   var IMG_HEIGHT = 40;
   var TITLES = ['Большая уютная квартира', 'Маленькая неуютная квартира', 'Огромный прекрасный дворец', 'Маленький ужасный дворец', 'Красивый гостевой домик', 'Некрасивый негостеприимный домик', 'Уютное бунгало далеко от моря', 'Неуютное бунгало по колено в воде'];
   var FLAT_TYPES = ['flat', 'house', 'bungalo'];
+  var TYPES_TRANSLATE = {'flat': 'Квартира', 'house': 'Дом', 'bungalo': 'Бунгало'};
   var TIMES = ['12:00', '13:00', '14:00'];
   var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 
@@ -81,7 +82,7 @@
     return adverts;
   }
 
-  function removeUnnessaryFeatureElments(offer, cardElement) {
+  function removeUnnessaryFeatureElements(offer, cardElement) {
     for (var i = 0; i < FEATURES.length; i++) {
       if (offer.features.indexOf(FEATURES[i]) < 0) {
         cardElement.querySelector('.feature--' + FEATURES[i]).remove();
@@ -94,12 +95,12 @@
 
     cardElement.querySelector('h3').textContent = offer.title;
     cardElement.querySelector('small').textContent = offer.address;
-    cardElement.querySelector('.popup__price').textContent = offer.price + ' &#x20bd;/ночь';
-    cardElement.querySelector('h4').textContent = offer.type;
+    cardElement.querySelector('.popup__price').innerHTML = offer.price + ' 20BD&#x20bd;/ночь';
+    cardElement.querySelector('h4').textContent = TYPES_TRANSLATE[offer.type];
     cardElement.querySelector('h4').nextElementSibling.textContent = offer.rooms + ' комнаты для ' + offer.guests + ' гостей';
     cardElement.querySelector('h4').nextElementSibling.nextElementSibling.textContent = 'Заезд после ' + offer.checkin + ', выезд до ' + offer.checkout;
     cardElement.querySelector('.popup__pictures').previousElementSibling.textContent = offer.description;
-    removeUnnessaryFeatureElments(offer, cardElement);
+    removeUnnessaryFeatureElements(offer, cardElement);
     cardElement.querySelector('.popup__avatar').src = advert.author.avatar;
 
     filtersContainerElement.appendChild(cardElement);
