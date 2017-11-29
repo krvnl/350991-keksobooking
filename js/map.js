@@ -95,7 +95,7 @@
 
     cardElement.querySelector('h3').textContent = offer.title;
     cardElement.querySelector('small').textContent = offer.address;
-    cardElement.querySelector('.popup__price').innerHTML = offer.price + ' 20BD&#x20bd;/ночь';
+    cardElement.querySelector('.popup__price').innerHTML = offer.price + ' &#x20bd;/ночь';
     cardElement.querySelector('h4').textContent = TYPES_TRANSLATE[offer.type];
     cardElement.querySelector('h4').nextElementSibling.textContent = offer.rooms + ' комнаты для ' + offer.guests + ' гостей';
     cardElement.querySelector('h4').nextElementSibling.nextElementSibling.textContent = 'Заезд после ' + offer.checkin + ', выезд до ' + offer.checkout;
