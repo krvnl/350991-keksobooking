@@ -70,6 +70,7 @@
     advert.author = createAuthorObj(i);
     advert.offer = createOfferObj(i, location);
     advert.location = location;
+    advert.id = i;
 
     return advert;
   }
@@ -90,6 +91,7 @@
     pinElement.style.left = (advert.location.x + IMG_WIDTH / 2) + 'px';
     pinElement.style.top = (advert.location.y + IMG_HEIGHT) + 'px';
     pinElement.querySelector('img').src = advert.author.avatar;
+    pinElement.setAttribute('advert-id', advert.id);
 
     return pinElement;
   }
@@ -110,11 +112,11 @@
   }
 
   function openCard(evt) {
-    offPinActive(clickedElement);
+    setPinUnactive();
     clickedElement = evt.currentTarget;
-    onPinActive(clickedElement);
+    setPinActive();
 
-    renderDefaultAdvert(adverts[getNumberOfPin(clickedElement)]);
+    renderDefaultAdvert(adverts[clickedElement.getAttribute('advert-id')]);
     closeIconElement = userDialogElement.querySelector('.popup__close');
     closeIconElement.addEventListener('click', function () {
       closeCard(clickedElement);
@@ -129,18 +131,14 @@
     document.addEventListener('keydown', onEscPress);
   }
 
-  function offPinActive(clickedElement) {
+  function setPinUnactive() {
     if (clickedElement) {
       clickedElement.classList.remove('map__pin--active');
     }
   }
 
-  function onPinActive() {
+  function setPinActive() {
     clickedElement.classList.add('map__pin--active');
-  }
-
-  function getNumberOfPin(clickedElement) {
-    return clickedElement.querySelector('img').src.charAt(60) - 1;
   }
 
   function renderDefaultAdvert(advert) {
@@ -169,14 +167,14 @@
 
   function closeCard(clickedElement) {
     document.querySelector('.map__filters-container article').remove();
-    offPinActive(clickedElement);
+    setPinUnactive(clickedElement);
     document.removeEventListener('keydown', onEscPress);
   }
 
   function showMap() {
     userDialogElement.classList.remove('map--faded');
     renderAllPins(adverts);
-    var pinElements = pinListElement.querySelectorAll('#butPin');
+    var pinElements = pinListElement.querySelectorAll('.map__pin:not(.map__pin--main)');
     for (var j = 0; j < pinElements.length; j++) {
       pinElements[j].addEventListener('mouseup', function (evt) {
         openCard(evt);
