@@ -63,6 +63,16 @@
     return offer;
   }
 
+  function createAdverts() {
+    var adverts = [];
+
+    for (var i = 0; i < 8; i++) {
+      adverts[i] = createAdvert(i);
+    }
+
+    return adverts;
+  }
+
   function createAdvert(i) {
     var advert = {};
     var location = createLocationObj();
@@ -75,14 +85,32 @@
     return advert;
   }
 
-  function createAdverts() {
-    var adverts = [];
+  function showMap() {
+    userDialogElement.classList.remove('map--faded');
+    renderAllPins(adverts);
+    var pinElements = pinListElement.querySelectorAll('.map__pin:not(.map__pin--main)');
+    for (var j = 0; j < pinElements.length; j++) {
+      pinElements[j].addEventListener('mouseup', function (evt) {
+        closeCard();
+        openCard(evt);
+      });
 
-    for (var i = 0; i < 8; i++) {
-      adverts[i] = createAdvert(i);
+      pinElements[j].addEventListener('keydown', function (evt) {
+        if (evt.keyCode === ENTER_KEYCODE) {
+          closeCard();
+          openCard(evt);
+        }
+      });
     }
+  }
 
-    return adverts;
+  function renderAllPins(adverts) {
+    var fragmentElement = document.createDocumentFragment();
+
+    for (var i = 0; i < adverts.length; i++) {
+      fragmentElement.appendChild(renderPin(adverts[i]));
+    }
+    pinListElement.appendChild(fragmentElement);
   }
 
   function renderPin(advert) {
@@ -96,13 +124,25 @@
     return pinElement;
   }
 
-  function renderAllPins(adverts) {
-    var fragmentElement = document.createDocumentFragment();
-
-    for (var i = 0; i < adverts.length; i++) {
-      fragmentElement.appendChild(renderPin(adverts[i]));
+  function closeCard() {
+    var card = document.querySelector('.map__filters-container article');
+    if (card) {
+      card.removeEventListener('mouseup', onClicCloseIcon);
+      card.removeEventListener('keydown', onEntrPressCloseIcon);
+      document.removeEventListener('keydown', onEscPress);
+      card.remove();
     }
-    pinListElement.appendChild(fragmentElement);
+    setPinUnactive();
+  }
+
+  function onClicCloseIcon() {
+    closeCard();
+  }
+
+  function onEntrPressCloseIcon(evt) {
+    if (evt.keyCode === ENTER_KEYCODE) {
+      closeCard();
+    }
   }
 
   function onEscPress(evt) {
@@ -116,18 +156,11 @@
     clickedElement = evt.currentTarget;
     setPinActive();
 
-    renderDefaultAdvert(adverts[clickedElement.getAttribute('advert-id')]);
+    renderCard(adverts[clickedElement.getAttribute('advert-id')]);
     closeIconElement = userDialogElement.querySelector('.popup__close');
-    closeIconElement.addEventListener('click', function () {
-      closeCard();
-    });
 
-    closeIconElement.addEventListener('keydown', function () {
-      if (evt.keyCode === ENTER_KEYCODE) {
-        closeCard();
-      }
-    });
-
+    closeIconElement.addEventListener('mouseup', onClicCloseIcon);
+    closeIconElement.addEventListener('keydown', onEntrPressCloseIcon);
     document.addEventListener('keydown', onEscPress);
   }
 
@@ -141,7 +174,7 @@
     clickedElement.classList.add('map__pin--active');
   }
 
-  function renderDefaultAdvert(advert) {
+  function renderCard(advert) {
     var offer = advert.offer;
     var cardElement = cardTemplateElement.cloneNode(true);
 
@@ -165,33 +198,6 @@
     }
   }
 
-  function closeCard() {
-    var card = document.querySelector('.map__filters-container article');
-    if (card) {
-      card.remove();
-    }
-    setPinUnactive();
-    document.removeEventListener('keydown', onEscPress);
-  }
-
-  function showMap() {
-    userDialogElement.classList.remove('map--faded');
-    renderAllPins(adverts);
-    var pinElements = pinListElement.querySelectorAll('.map__pin:not(.map__pin--main)');
-    for (var j = 0; j < pinElements.length; j++) {
-      pinElements[j].addEventListener('mouseup', function (evt) {
-        closeCard();
-        openCard(evt);
-      });
-
-      pinElements[j].addEventListener('keydown', function (evt) {
-        if (evt.keyCode === ENTER_KEYCODE) {
-          openCard(evt);
-        }
-      });
-    }
-  }
-
   function showForm() {
     var noticeFormElement = document.querySelector('.notice__form');
     noticeFormElement.classList.remove('notice__form--disabled');
@@ -200,6 +206,7 @@
       formElements[i].removeAttribute('disabled');
     }
   }
+
   var adverts = createAdverts();
 
   var userDialogElement = document.querySelector('.map');
