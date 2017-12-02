@@ -107,7 +107,7 @@
 
   function onEscPress(evt) {
     if (evt.keyCode === ESC_KEYCODE) {
-      closeCard(clickedElement);
+      closeCard();
     }
   }
 
@@ -119,12 +119,12 @@
     renderDefaultAdvert(adverts[clickedElement.getAttribute('advert-id')]);
     closeIconElement = userDialogElement.querySelector('.popup__close');
     closeIconElement.addEventListener('click', function () {
-      closeCard(clickedElement);
+      closeCard();
     });
 
     closeIconElement.addEventListener('keydown', function () {
       if (evt.keyCode === ENTER_KEYCODE) {
-        closeCard(clickedElement);
+        closeCard();
       }
     });
 
@@ -165,9 +165,12 @@
     }
   }
 
-  function closeCard(clickedElement) {
-    document.querySelector('.map__filters-container article').remove();
-    setPinUnactive(clickedElement);
+  function closeCard() {
+    var card = document.querySelector('.map__filters-container article');
+    if (card) {
+      card.remove();
+    }
+    setPinUnactive();
     document.removeEventListener('keydown', onEscPress);
   }
 
@@ -177,6 +180,7 @@
     var pinElements = pinListElement.querySelectorAll('.map__pin:not(.map__pin--main)');
     for (var j = 0; j < pinElements.length; j++) {
       pinElements[j].addEventListener('mouseup', function (evt) {
+        closeCard();
         openCard(evt);
       });
 
