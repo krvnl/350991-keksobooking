@@ -198,8 +198,9 @@
     }
   }
 
+  var noticeFormElement = document.querySelector('.notice__form');
+
   function showForm() {
-    var noticeFormElement = document.querySelector('.notice__form');
     noticeFormElement.classList.remove('notice__form--disabled');
     var formElements = noticeFormElement.querySelectorAll('.form__element');
     for (var i = 0; i < formElements.length; i++) {
@@ -220,10 +221,71 @@
   var clickedElement = null;
   var closeIconElement = null;
 
+  function automaticFormEdit() {
+    // Автоматическое изменение полей заезда/выезда
+    function onTimeChange(evt) {
+      if (evt.target.name === 'timein') {
+        timeOut.selectedIndex = evt.target.selectedIndex;
+      } else {
+        timeIn.selectedIndex = evt.target.selectedIndex;
+      }
+    }
+    var timeIn = document.querySelector('#timein');
+    var timeOut = document.querySelector('#timeout');
+    timeIn.addEventListener('change', onTimeChange);
+    timeOut.addEventListener('change', onTimeChange);
+
+    // Автоматическое изменение цены за ночь
+    function onTypeChange(evt) {
+      if (evt.target.value === 'bungalo') {
+        price.value = 0;
+      } else if (evt.target.value === 'flat') {
+        price.value = 1000;
+      } else if (evt.target.value === 'house') {
+        price.value = 5000;
+      } else if (evt.target.value === 'palace') {
+        price.value = 10000;
+      }
+    }
+    var accommodation = document.querySelector('#type');
+    var price = document.querySelector('#price');
+    accommodation.addEventListener('change', onTypeChange)
+
+    // Автоматическое изменение количества гостей
+    function onRoomNumberChange(evt) {
+      capacity.selectedIndex = evt.target.selectedIndex;
+    }
+    var capacity = document.querySelector('#capacity');
+    var roomNumber = document.querySelector('#room_number');
+    roomNumber.addEventListener('change', onRoomNumberChange);
+  }
+
+  //checking validity
+
   var mainPinElement = document.querySelector('.map__pin--main');
   mainPinElement.addEventListener('mouseup', function () {
     showMap();
     showForm();
+    automaticFormEdit();
+    //Проверка правильности заполнения полей перед отправкой формы
+    var submit = document.querySelector('.form__submit');
+    function onSubmitClick () {
+      var inputFields = noticeFormElement.querySelectorAll('input[type="text"], input[type="number"]');
+      var invalidInputFields = '';
+      for (var i = 0; i < inputFields.length; i++) {
+        if (!inputFields[i].validity.valid) {
+          inputFields[i].setAttribute('style', 'border: 2px solid red');
+          invalidInputFields = invalidInputFields + inputFields[i].previousElementSibling.innerHTML + '\n';
+        }
+      }
+      if (invalidInputFields) {
+        alert('Неверно запонены поля:\n\n' + invalidInputFields);
+      } else {
+        for (var i = 0; i < inputFields.length; i++) {
+            inputFields[i].removeAttribute('style');
+        }
+      }
+    }
+    submit.addEventListener('click', onSubmitClick);
   });
 })();
-
