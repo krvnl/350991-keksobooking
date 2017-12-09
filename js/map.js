@@ -221,71 +221,68 @@
   var clickedElement = null;
   var closeIconElement = null;
 
-  function automaticFormEdit() {
-    // Автоматическое изменение полей заезда/выезда
-    function onTimeChange(evt) {
-      if (evt.target.name === 'timein') {
-        timeOut.selectedIndex = evt.target.selectedIndex;
-      } else {
-        timeIn.selectedIndex = evt.target.selectedIndex;
-      }
-    }
-    var timeIn = document.querySelector('#timein');
-    var timeOut = document.querySelector('#timeout');
-    timeIn.addEventListener('change', onTimeChange);
-    timeOut.addEventListener('change', onTimeChange);
+  var timeInElement = document.querySelector('#timein');
+  var timeOutElement = document.querySelector('#timeout');
+  var typeElement = document.querySelector('#type');
+  var priceElement = document.querySelector('#price');
+  var capacityElement = document.querySelector('#capacity');
+  var roomNumberElement = document.querySelector('#room_number');
 
-    // Автоматическое изменение цены за ночь
-    function onTypeChange(evt) {
-      if (evt.target.value === 'bungalo') {
-        price.value = 0;
-      } else if (evt.target.value === 'flat') {
-        price.value = 1000;
-      } else if (evt.target.value === 'house') {
-        price.value = 5000;
-      } else if (evt.target.value === 'palace') {
-        price.value = 10000;
-      }
+  // Автоматическое изменение полей заезда/выезда
+  function onTimeChange(evt) {
+    if (evt.target.name === 'timein') {
+      timeOutElement.selectedIndex = evt.target.selectedIndex;
+    } else {
+      timeInElement.selectedIndex = evt.target.selectedIndex;
     }
-    var accommodation = document.querySelector('#type');
-    var price = document.querySelector('#price');
-    accommodation.addEventListener('change', onTypeChange)
-
-    // Автоматическое изменение количества гостей
-    function onRoomNumberChange(evt) {
-      capacity.selectedIndex = evt.target.selectedIndex;
-    }
-    var capacity = document.querySelector('#capacity');
-    var roomNumber = document.querySelector('#room_number');
-    roomNumber.addEventListener('change', onRoomNumberChange);
   }
+  timeInElement.addEventListener('change', onTimeChange);
+  timeOutElement.addEventListener('change', onTimeChange);
 
-  //checking validity
+  // Автоматическое изменение цены за ночь
+  function onTypeChange(evt) {
+    switch (evt.target.value) {
+      case 'bungalo':
+        priceElement.min = priceElement.value = 0;
+        break;
+      case 'flat':
+        priceElement.min = priceElement.value = 1000;
+        break;
+      case 'house':
+        priceElement.min = priceElement.value = 5000;
+        break;
+      case 'palace':
+        priceElement.min = priceElement.value = 10000;
+        break;
+    }
+  }
+  typeElement.addEventListener('change', onTypeChange);
+
+  // Автоматическое изменение количества гостей
+  function onRoomNumberChange(evt) {
+    capacityElement.selectedIndex = evt.target.selectedIndex;
+  }
+  roomNumberElement.addEventListener('change', onRoomNumberChange);
 
   var mainPinElement = document.querySelector('.map__pin--main');
+  var inputValidateElements = noticeFormElement.querySelectorAll('input[type="text"], input[type="number"]');
+
+  var submitElement = document.querySelector('.form__submit');
+  // Проверка правильности заполнения полей перед отправкой формы
+  submitElement.addEventListener('click', onSubmitClick);
+
+  function onSubmitClick() {
+    for (var i = 0; i < inputValidateElements.length; i++) {
+      if (!inputValidateElements[i].validity.valid) {
+        inputValidateElements[i].setAttribute('style', 'border: 2px solid red');
+      } else {
+        inputValidateElements[i].removeAttribute('style');
+      }
+    }
+  }
+
   mainPinElement.addEventListener('mouseup', function () {
     showMap();
     showForm();
-    automaticFormEdit();
-    //Проверка правильности заполнения полей перед отправкой формы
-    var submit = document.querySelector('.form__submit');
-    function onSubmitClick () {
-      var inputFields = noticeFormElement.querySelectorAll('input[type="text"], input[type="number"]');
-      var invalidInputFields = '';
-      for (var i = 0; i < inputFields.length; i++) {
-        if (!inputFields[i].validity.valid) {
-          inputFields[i].setAttribute('style', 'border: 2px solid red');
-          invalidInputFields = invalidInputFields + inputFields[i].previousElementSibling.innerHTML + '\n';
-        }
-      }
-      if (invalidInputFields) {
-        alert('Неверно запонены поля:\n\n' + invalidInputFields);
-      } else {
-        for (var i = 0; i < inputFields.length; i++) {
-            inputFields[i].removeAttribute('style');
-        }
-      }
-    }
-    submit.addEventListener('click', onSubmitClick);
   });
 })();
