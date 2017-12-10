@@ -243,16 +243,16 @@
   function onTypeChange(evt) {
     switch (evt.target.value) {
       case 'bungalo':
-        priceElement.min = priceElement.value = 0;
+        priceElement.min = 0;
         break;
       case 'flat':
-        priceElement.min = priceElement.value = 1000;
+        priceElement.min = 1000;
         break;
       case 'house':
-        priceElement.min = priceElement.value = 5000;
+        priceElement.min = 5000;
         break;
       case 'palace':
-        priceElement.min = priceElement.value = 10000;
+        priceElement.min = 10000;
         break;
     }
   }
@@ -269,9 +269,9 @@
 
   var submitElement = document.querySelector('.form__submit');
   // Проверка правильности заполнения полей перед отправкой формы
-  submitElement.addEventListener('click', onSubmitClick);
+  submitElement.addEventListener('submit', onSubmitSubmit);
 
-  function onSubmitClick() {
+  function onSubmitSubmit() {
     for (var i = 0; i < inputValidateElements.length; i++) {
       if (!inputValidateElements[i].validity.valid) {
         inputValidateElements[i].setAttribute('style', 'border: 2px solid red');
