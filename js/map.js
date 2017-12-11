@@ -269,14 +269,15 @@
 
   var submitElement = document.querySelector('.form__submit');
   // Проверка правильности заполнения полей перед отправкой формы
-  submitElement.addEventListener('submit', onSubmitSubmit);
+  submitElement.addEventListener('click', onSubmitClick);
 
-  function onSubmitSubmit() {
+  function onSubmitClick() {
     for (var i = 0; i < inputValidateElements.length; i++) {
       if (!inputValidateElements[i].validity.valid) {
-        inputValidateElements[i].setAttribute('style', 'border: 2px solid red');
+        inputValidateElements[i].style.border = '3px solid red';
+        console.log(inputValidateElements[i].style.border);
       } else {
-        inputValidateElements[i].removeAttribute('style');
+        inputValidateElements[i].style.border = '';
       }
     }
   }
