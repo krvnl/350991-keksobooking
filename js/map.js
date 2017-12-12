@@ -275,7 +275,6 @@
     for (var i = 0; i < inputValidateElements.length; i++) {
       if (!inputValidateElements[i].validity.valid) {
         inputValidateElements[i].style.border = '3px solid red';
-        console.log(inputValidateElements[i].style.border);
       } else {
         inputValidateElements[i].style.border = '';
       }
