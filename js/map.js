@@ -25,11 +25,11 @@
     return pinElement;
   }
 
-  function renderAllPins(adverts) {
+  function renderAllPins(adv) {
     var fragmentElement = document.createDocumentFragment();
 
-    for (var i = 0; i < adverts.length; i++) {
-      fragmentElement.appendChild(renderPin(adverts[i]));
+    for (var i = 0; i < adv.length; i++) {
+      fragmentElement.appendChild(renderPin(adv[i]));
     }
     pinListElement.appendChild(fragmentElement);
   }
