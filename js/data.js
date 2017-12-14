@@ -2,17 +2,23 @@
 'use strict';
 
 (function () {
-  window.data = {
-    createAdverts: function () {
-      var adverts = [];
-      for (var i = 0; i < 8; i++) {
-        adverts[i] = createAdvert(i);
-      }
+  var TIMES = ['12:00', '13:00', '14:00'];
+  var TITLES = ['Большая уютная квартира', 'Маленькая неуютная квартира', 'Огромный прекрасный дворец', 'Маленький ужасный дворец', 'Красивый гостевой домик', 'Некрасивый негостеприимный домик', 'Уютное бунгало далеко от моря', 'Неуютное бунгало по колено в воде'];
+  var FLAT_TYPES = ['flat', 'house', 'bungalo'];
+  var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 
-      return adverts;
-    },
-    FEATURES: ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner']
+  window.data = {
+    adverts: createAdverts()
   };
+
+  function createAdverts() {
+    var adverts = [];
+    for (var i = 0; i < 8; i++) {
+      adverts[i] = createAdvert(i);
+    }
+
+    return adverts;
+  }
 
   function createAdvert(i) {
     var advert = {};
@@ -25,10 +31,6 @@
 
     return advert;
   }
-
-  var TITLES = ['Большая уютная квартира', 'Маленькая неуютная квартира', 'Огромный прекрасный дворец', 'Маленький ужасный дворец', 'Красивый гостевой домик', 'Некрасивый негостеприимный домик', 'Уютное бунгало далеко от моря', 'Неуютное бунгало по колено в воде'];
-  var FLAT_TYPES = ['flat', 'house', 'bungalo'];
-  var TIMES = ['12:00', '13:00', '14:00'];
 
   function generateRandomDouble(min, max) {
     return Math.random() * (max - min) + min;
@@ -74,7 +76,7 @@
     offer.guests = generateRandomInt(1, 3);
     offer.checkin = getRandomArrElement(TIMES);
     offer.checkout = getRandomArrElement(TIMES);
-    offer.features = getRandomArrElemets(window.data.FEATURES);
+    offer.features = getRandomArrElemets(FEATURES);
     offer.description = '';
     offer.photos = [];
 

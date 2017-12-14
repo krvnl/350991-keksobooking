@@ -2,8 +2,6 @@
 'use strict';
 
 (function () {
-  var noticeFormElement = document.querySelector('.notice__form');
-
   window.form = {
     showForm: function () {
       noticeFormElement.classList.remove('notice__form--disabled');
@@ -13,6 +11,8 @@
       }
     }
   };
+
+  var noticeFormElement = document.querySelector('.notice__form');
 
   var timeInElement = document.querySelector('#timein');
   var timeOutElement = document.querySelector('#timeout');
