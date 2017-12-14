@@ -23,7 +23,7 @@
       cardElement.querySelector('.popup__avatar').src = advert.author.avatar;
       filtersContainerElement.appendChild(cardElement);
     },
-    openCard: function(evt) {
+    openCard: function (evt) {
       setPinUnactive();
       clickedElement = evt.currentTarget;
       setPinActive();

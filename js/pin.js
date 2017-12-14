@@ -6,8 +6,8 @@
   var IMG_HEIGHT = 40;
   var ENTER_KEYCODE = 13;
 
-    window.pin = {
-    renderAllPins: function(adv) {
+  window.pin = {
+    renderAllPins: function (adv) {
       var fragmentElement = document.createDocumentFragment();
 
       for (var i = 0; i < adv.length; i++) {
