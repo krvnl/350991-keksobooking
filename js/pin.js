@@ -2,8 +2,6 @@
 'use strict';
 
 (function () {
-  var IMG_WIDTH = 40;
-  var IMG_HEIGHT = 40;
   var ENTER_KEYCODE = 13;
 
   window.pin = {

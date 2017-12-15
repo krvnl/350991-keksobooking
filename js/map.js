@@ -36,7 +36,7 @@
         var pinPointerCoordinateY = mainPinElement.offsetTop + shift.y + 50;
         var pinPointerCoordinateX = mainPinElement.offsetLeft + shift.x;
 
-        if ((pinPointerCoordinateY>=100)&&(pinPointerCoordinateY<=500)) {
+        if ((pinPointerCoordinateY >= 100) && (pinPointerCoordinateY <= 500)) {
           mainPinElement.style.top = (mainPinElement.offsetTop + shift.y) + 'px';
           mainPinElement.style.left = (mainPinElement.offsetLeft + shift.x) + 'px';
         }
@@ -45,14 +45,14 @@
 
       var onMouseUp = function (upEvt) {
         upEvt.preventDefault();
-        console.log(mainPinElement.style.top + '  ' + upEvt.clientY);
+
         document.removeEventListener('mousemove', onMouseMove);
         document.removeEventListener('mouseup', onMouseUp);
       };
 
       document.addEventListener('mousemove', onMouseMove);
       document.addEventListener('mouseup', onMouseUp);
-    })
+    });
   }
 
   var mainPinElement = document.querySelector('.map__pin--main');
