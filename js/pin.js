@@ -2,8 +2,6 @@
 'use strict';
 
 (function () {
-  var IMG_WIDTH = 40;
-  var IMG_HEIGHT = 40;
   var ENTER_KEYCODE = 13;
 
   window.pin = {
@@ -39,8 +37,8 @@
   function renderPin(advert) {
     var pinElement = pinTemplateElement.cloneNode(true);
 
-    pinElement.style.left = (advert.location.x + IMG_WIDTH / 2) + 'px';
-    pinElement.style.top = (advert.location.y + IMG_HEIGHT) + 'px';
+    pinElement.style.left = (advert.location.x - 5) + 'px'; // поправка относительно минимального значения координаты X для pin указателя
+    pinElement.style.top = (advert.location.y - 40) + 'px'; // поправка относительно минимального значения координаты Y для pin указателя
     pinElement.querySelector('img').src = advert.author.avatar;
     pinElement.setAttribute('advert-id', advert.id);
 
