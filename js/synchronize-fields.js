@@ -27,20 +27,20 @@
     }
   };
 
-  function syncIndex (element, index) {
+  function syncIndex(element, index) {
     element.selectedIndex = index;
   }
 
-  function syncMinValue (element, value) {
+  function syncMinValue(element, value) {
     element.min = value;
   }
 
   // Автоматическое изменение полей заезда/выезда
-  synchronizeFields(syncIndex, timeInElement, timeOutElement);
+  window.synchronizeFields(syncIndex, timeInElement, timeOutElement);
 
   // Автоматическое изменение количества гостей
-  synchronizeFields(syncIndex, roomNumberElement, capacityElement);
+  window.synchronizeFields(syncIndex, roomNumberElement, capacityElement);
 
   // Автоматическое изменение цены за ночь
-  synchronizeFields(syncMinValue, typeElement, priceElement, [1000, 0, 5000, 10000]);
+  window.synchronizeFields(syncMinValue, typeElement, priceElement, [1000, 0, 5000, 10000]);
 })();
