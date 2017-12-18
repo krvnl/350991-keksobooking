@@ -23,7 +23,7 @@
     removeUnnessaryFeatureElements(offer, cardElement);
     cardElement.querySelector('.popup__avatar').src = advert.author.avatar;
     filtersContainerElement.appendChild(cardElement);
-  }
+  };
 
   function removeUnnessaryFeatureElements(offer, cardElement) {
     for (var i = 0; i < FEATURES.length; i++) {
