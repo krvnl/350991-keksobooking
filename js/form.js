@@ -35,7 +35,6 @@
 
   // // Автоматическое изменение количества гостей
   window.synchronizeFields(roomNumberElement, capacityElement, ['1', '2', '3', '100'], ['1', '2', '3', '0'], syncValue);
-  window.synchronizeFields(capacityElement, roomNumberElement, ['1', '2', '3', '0'], ['1', '2', '3', '100'], syncValue);
 
   // Автоматическое изменение цены за ночь
   window.synchronizeFields(typeElement, priceElement, ['flat', 'bungalo', 'house', 'palace'], ['1000', '0', '5000', '10000'], syncMinValue);
