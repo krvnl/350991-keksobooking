@@ -2,6 +2,15 @@
 'use strict';
 
 (function () {
+  var timeInElement = document.querySelector('#timein');
+  var timeOutElement = document.querySelector('#timeout');
+  var roomNumberElement = document.querySelector('#room_number');
+  var capacityElement = document.querySelector('#capacity');
+  var typeElement = document.querySelector('#type');
+  var priceElement = document.querySelector('#price');
+
+  var noticeFormElement = document.querySelector('.notice__form');
+
   window.form = {
     showForm: function () {
       noticeFormElement.classList.remove('notice__form--disabled');
@@ -12,50 +21,23 @@
     }
   };
 
-  var noticeFormElement = document.querySelector('.notice__form');
+  function syncValue(element, value) {
+    element.value = value;
+  }
 
-  var timeInElement = document.querySelector('#timein');
-  var timeOutElement = document.querySelector('#timeout');
-  var typeElement = document.querySelector('#type');
-  var priceElement = document.querySelector('#price');
-  var capacityElement = document.querySelector('#capacity');
-  var roomNumberElement = document.querySelector('#room_number');
+  function syncMinValue(element, value) {
+    element.min = value;
+  }
 
   // Автоматическое изменение полей заезда/выезда
-  function onTimeChange(evt) {
-    if (evt.target.name === 'timein') {
-      timeOutElement.selectedIndex = evt.target.selectedIndex;
-    } else {
-      timeInElement.selectedIndex = evt.target.selectedIndex;
-    }
-  }
-  timeInElement.addEventListener('change', onTimeChange);
-  timeOutElement.addEventListener('change', onTimeChange);
+  window.synchronizeFields(timeInElement, timeOutElement, ['12:00', '13:00', '14:00'], ['12:00', '13:00', '14:00'], syncValue);
+  window.synchronizeFields(timeOutElement, timeInElement, ['12:00', '13:00', '14:00'], ['12:00', '13:00', '14:00'], syncValue);
+
+  // // Автоматическое изменение количества гостей
+  window.synchronizeFields(roomNumberElement, capacityElement, ['1', '2', '3', '100'], ['1', '2', '3', '0'], syncValue);
 
   // Автоматическое изменение цены за ночь
-  function onTypeChange(evt) {
-    switch (evt.target.value) {
-      case 'bungalo':
-        priceElement.min = 0;
-        break;
-      case 'flat':
-        priceElement.min = 1000;
-        break;
-      case 'house':
-        priceElement.min = 5000;
-        break;
-      case 'palace':
-        priceElement.min = 10000;
-        break;
-    }
-  }
-  typeElement.addEventListener('change', onTypeChange);
-
-  // Автоматическое изменение количества гостей
-  function onRoomNumberChange(evt) {
-    capacityElement.selectedIndex = evt.target.selectedIndex;
-  }
-  roomNumberElement.addEventListener('change', onRoomNumberChange);
+  window.synchronizeFields(typeElement, priceElement, ['flat', 'bungalo', 'house', 'palace'], ['1000', '0', '5000', '10000'], syncMinValue);
 
   var inputValidateElements = noticeFormElement.querySelectorAll('input[type="text"], input[type="number"]');
 
