@@ -37,6 +37,7 @@
 
       xhr.open('POST', URL);
       xhr.send(data);
-    }
+    },
+    adverts: null
   };
 })();

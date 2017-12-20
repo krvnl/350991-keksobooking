@@ -6,7 +6,7 @@
 
   window.pin = {
     renderAllPins: function (adv) {
-      window.data.adverts = adv;
+      window.backend.adverts = adv;
       var fragmentElement = document.createDocumentFragment();
 
       for (var i = 0; i < adv.length; i++) {

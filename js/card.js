@@ -11,7 +11,7 @@
       clickedElement = evt.currentTarget;
       setPinActive();
 
-      window.showCard(window.data.adverts[clickedElement.getAttribute('advert-id')]);
+      window.showCard(window.backend.adverts[clickedElement.getAttribute('advert-id')]);
 
       closeIconElement = userDialogElement.querySelector('.popup__close');
 

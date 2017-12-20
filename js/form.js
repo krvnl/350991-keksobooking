@@ -40,15 +40,15 @@
   }
 
   function errorHandler(errorMessage) {
-    var node = document.createElement('DIV');
-    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
-    node.style.position = 'fixed';
-    node.style.left = 0;
-    node.style.right = 0;
-    node.style.fontSize = '30px';
+    var nodeElement = document.createElement('DIV');
+    nodeElement.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
+    nodeElement.style.position = 'fixed';
+    nodeElement.style.left = 0;
+    nodeElement.style.right = 0;
+    nodeElement.style.fontSize = '30px';
 
-    node.textContent = errorMessage;
-    document.body.insertAdjacentElement('afterbegin', node);
+    nodeElement.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', nodeElement);
   }
 
   // Автоматическое изменение полей заезда/выезда
@@ -67,13 +67,17 @@
   // Проверка правильности заполнения полей перед отправкой формы
   submitElement.addEventListener('click', function (event) {
     event.preventDefault();
+    var validData = true;
     for (var i = 0; i < inputValidateElements.length; i++) {
       if (!inputValidateElements[i].validity.valid) {
         inputValidateElements[i].style.border = '3px solid red';
+        validData = false;
       } else {
         inputValidateElements[i].style.border = '';
-        window.backend.save(new FormData(noticeFormElement), setDefaultValues, errorHandler);
       }
+    }
+    if (validData) {
+      window.backend.save(new FormData(noticeFormElement), setDefaultValues, errorHandler);
     }
   });
 })();

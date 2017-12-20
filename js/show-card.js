@@ -25,13 +25,13 @@
     cardElement.querySelector('.popup__avatar').src = advert.author.avatar;
 
     for (var i = 0; i < photos.length; i++) {
-      var node = document.createElement('li');
-      var picture = document.createElement('img');
-      picture.width = 50;
-      picture.height = 50;
-      picture.src = photos[i];
-      node.appendChild(picture);
-      photosElement.appendChild(node);
+      var nodeElement = document.createElement('li');
+      var pictureElement = document.createElement('img');
+      pictureElement.width = 50;
+      pictureElement.height = 50;
+      pictureElement.src = photos[i];
+      nodeElement.appendChild(pictureElement);
+      photosElement.appendChild(nodeElement);
     }
 
     filtersContainerElement.appendChild(cardElement);
