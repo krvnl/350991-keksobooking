@@ -19,8 +19,8 @@
       for (var i = 0; i < formElements.length; i++) {
         formElements[i].removeAttribute('disabled');
       }
-      for (var i = 0; i < defaultElements.length; i++) {
-        defaultElements[i].defaultValue = defaultElements[i].value;
+      for (var j = 0; j < defaultElements.length; j++) {
+        defaultElements[j].defaultValue = defaultElements[j].value;
       }
     }
   };
@@ -66,16 +66,14 @@
   var submitElement = document.querySelector('.form__submit');
   // Проверка правильности заполнения полей перед отправкой формы
   submitElement.addEventListener('click', function (event) {
-      event.preventDefault();
-      for (var i = 0; i < inputValidateElements.length; i++) {
-        if (!inputValidateElements[i].validity.valid) {
-          inputValidateElements[i].style.border = '3px solid red';
-        } else {
-          inputValidateElements[i].style.border = '';
-          // window.backend.save(new FormData(noticeFormElement), setDefaultValues, errorHandler);
-          window.backend.save(new FormData(noticeFormElement), setDefaultValues, errorHandler);
-        }
+    event.preventDefault();
+    for (var i = 0; i < inputValidateElements.length; i++) {
+      if (!inputValidateElements[i].validity.valid) {
+        inputValidateElements[i].style.border = '3px solid red';
+      } else {
+        inputValidateElements[i].style.border = '';
+        window.backend.save(new FormData(noticeFormElement), setDefaultValues, errorHandler);
       }
     }
-  );
+  });
 })();
