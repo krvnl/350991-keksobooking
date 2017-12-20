@@ -10,13 +10,17 @@
   var priceElement = document.querySelector('#price');
 
   var noticeFormElement = document.querySelector('.notice__form');
+  var formElements = noticeFormElement.querySelectorAll('.form__element');
+  var defaultElements = document.querySelectorAll('.form__element select, .form__element textarea, .form__element input[type="text"], .form__element input[type="number"]');
 
   window.form = {
     showForm: function () {
       noticeFormElement.classList.remove('notice__form--disabled');
-      var formElements = noticeFormElement.querySelectorAll('.form__element');
       for (var i = 0; i < formElements.length; i++) {
         formElements[i].removeAttribute('disabled');
+      }
+      for (var i = 0; i < defaultElements.length; i++) {
+        defaultElements[i].defaultValue = defaultElements[i].value;
       }
     }
   };
@@ -27,6 +31,24 @@
 
   function syncMinValue(element, value) {
     element.min = value;
+  }
+
+  function setDefaultValues() {
+    for (var i = 0; i < defaultElements.length; i++) {
+      defaultElements[i].value = defaultElements[i].defaultValue;
+    }
+  }
+
+  function errorHandler(errorMessage) {
+    var node = document.createElement('DIV');
+    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
+    node.style.position = 'fixed';
+    node.style.left = 0;
+    node.style.right = 0;
+    node.style.fontSize = '30px';
+
+    node.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', node);
   }
 
   // Автоматическое изменение полей заезда/выезда
@@ -43,15 +65,17 @@
 
   var submitElement = document.querySelector('.form__submit');
   // Проверка правильности заполнения полей перед отправкой формы
-  submitElement.addEventListener('click', onSubmitClick);
-
-  function onSubmitClick() {
-    for (var i = 0; i < inputValidateElements.length; i++) {
-      if (!inputValidateElements[i].validity.valid) {
-        inputValidateElements[i].style.border = '3px solid red';
-      } else {
-        inputValidateElements[i].style.border = '';
+  submitElement.addEventListener('click', function (event) {
+      event.preventDefault();
+      for (var i = 0; i < inputValidateElements.length; i++) {
+        if (!inputValidateElements[i].validity.valid) {
+          inputValidateElements[i].style.border = '3px solid red';
+        } else {
+          inputValidateElements[i].style.border = '';
+          // window.backend.save(new FormData(noticeFormElement), setDefaultValues, errorHandler);
+          window.backend.save(new FormData(noticeFormElement), setDefaultValues, errorHandler);
+        }
       }
     }
-  }
+  );
 })();

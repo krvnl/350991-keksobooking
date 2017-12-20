@@ -6,10 +6,11 @@
 
   window.pin = {
     renderAllPins: function (adv) {
+      window.data.adverts = adv;
       var fragmentElement = document.createDocumentFragment();
 
       for (var i = 0; i < adv.length; i++) {
-        fragmentElement.appendChild(renderPin(adv[i]));
+        fragmentElement.appendChild(renderPin(adv[i], i));
       }
 
       pinListElement.appendChild(fragmentElement);
@@ -34,13 +35,13 @@
   var pinTemplateElement = document.querySelector('template').content.querySelector('.map__pin');
   var pinListElement = document.querySelector('.map__pins');
 
-  function renderPin(advert) {
+  function renderPin(advert, id) {
     var pinElement = pinTemplateElement.cloneNode(true);
 
     pinElement.style.left = (advert.location.x - 5) + 'px'; // поправка относительно минимального значения координаты X для pin указателя
     pinElement.style.top = (advert.location.y - 40) + 'px'; // поправка относительно минимального значения координаты Y для pin указателя
     pinElement.querySelector('img').src = advert.author.avatar;
-    pinElement.setAttribute('advert-id', advert.id);
+    pinElement.setAttribute('advert-id', id);
 
     return pinElement;
   }

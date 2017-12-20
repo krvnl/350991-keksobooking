@@ -5,13 +5,14 @@
   var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
   var TYPES_TRANSLATE = {'flat': 'Квартира', 'house': 'Дом', 'bungalo': 'Бунгало'};
 
-
   var cardTemplateElement = document.querySelector('template').content.querySelector('.map__card');
   var filtersContainerElement = document.querySelector('.map__filters-container');
 
   window.showCard = function (advert) {
     var offer = advert.offer;
     var cardElement = cardTemplateElement.cloneNode(true);
+    var photos = offer.photos;
+    var photosElement = cardElement.querySelector('.popup__pictures');
 
     cardElement.querySelector('h3').textContent = offer.title;
     cardElement.querySelector('small').textContent = offer.address;
@@ -19,9 +20,20 @@
     cardElement.querySelector('h4').textContent = TYPES_TRANSLATE[offer.type];
     cardElement.querySelector('h4').nextElementSibling.textContent = offer.rooms + ' комнаты для ' + offer.guests + ' гостей';
     cardElement.querySelector('h4').nextElementSibling.nextElementSibling.textContent = 'Заезд после ' + offer.checkin + ', выезд до ' + offer.checkout;
-    cardElement.querySelector('.popup__pictures').previousElementSibling.textContent = offer.description;
+    photosElement.previousElementSibling.textContent = offer.description;
     removeUnnessaryFeatureElements(offer, cardElement);
     cardElement.querySelector('.popup__avatar').src = advert.author.avatar;
+
+    for (var i = 0; i < photos.length; i++) {
+      var node = document.createElement('li');
+      var picture = document.createElement('img');
+      picture.width = 50;
+      picture.height = 50;
+      picture.src = photos[i];
+      node.appendChild(picture);
+      photosElement.appendChild(node);
+    }
+
     filtersContainerElement.appendChild(cardElement);
   };
 
@@ -32,5 +44,4 @@
       }
     }
   }
-
 })();
