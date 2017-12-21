@@ -24,9 +24,9 @@
       window.pin.adverts = adv;
       for (var i = 0; i < filteredArray.length; i++) {
         filteredArray[i] = new Array(adv.length);
-        adv.forEach(function(element,index) {
+        adv.forEach(function (element, index) {
           filteredArray[i][index] = index;
-        })
+        });
       }
 
       var fragmentElement = document.createDocumentFragment();
@@ -81,9 +81,9 @@
     arrayX.forEach(function (elementX) {
       arrayY.forEach(function (elementY) {
         if (elementY === elementX) {
-          arrayOfSameElements.push(elementY)
+          arrayOfSameElements.push(elementY);
         }
-      })
+      });
     });
     return arrayOfSameElements;
   }
@@ -99,7 +99,7 @@
     return resultArray;
   }
 
-  function filterAdverts (evt, arrayNumber, paramName) {
+  function filterAdverts(evt, arrayNumber, paramName) {
     filteredArray[arrayNumber] = [];
     if (evt.currentTarget.value === 'any') {
       window.pin.adverts.forEach(function (item, index) {
@@ -115,7 +115,7 @@
       });
     } else {
       window.pin.adverts.forEach(function (item, index) {
-        if ((item.offer[paramName] === parseInt(evt.currentTarget.value)) || (item.offer[paramName] === evt.currentTarget.value)) {
+        if ((item.offer[paramName] === parseInt(evt.currentTarget.value, 10)) || (item.offer[paramName] === evt.currentTarget.value)) {
           filteredArray[arrayNumber].push(index);
         }
       });
@@ -123,50 +123,52 @@
     window.debounce(updatePinElements(getIdsArray()));
   }
 
+  function getFeaturesFilteredArray() {
+    filteredArray[4] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+    var tempArray = [];
+    featuresChecked.forEach(function (elem) {
+      window.pin.adverts.forEach(function (advert, index) {
+        if (advert.offer.features.indexOf(elem) >= 0) {
+          tempArray.push(index);
+        }
+      });
+      filteredArray[4] = findSame(filteredArray[4], tempArray);
+      tempArray = [];
+    });
+  }
+
   // Фильтруем по типу жилья
   typeFilterElement.addEventListener('change', function (evt) {
-    filterAdverts(evt, 0, "type");
+    filterAdverts(evt, 0, 'type');
   });
 
   // Фильтруем по количеству комнат
   roomsFilterElement.addEventListener('change', function (evt) {
-    filterAdverts(evt, 1, "rooms");
+    filterAdverts(evt, 1, 'rooms');
   });
 
   // Фильтруем по количеству гостей
   guestsFilterElement.addEventListener('change', function (evt) {
-    filterAdverts(evt, 2, "guests");
+    filterAdverts(evt, 2, 'guests');
   });
 
   // Фильтруем по цене
   priceFilterElement.addEventListener('change', function (evt) {
-    filterAdverts(evt, 3, "price");
+    filterAdverts(evt, 3, 'price');
   });
 
   // Фильтруем по features
-  features.forEach(function(item) {
-    item.addEventListener('change', function(){
+  features.forEach(function (item) {
+    item.addEventListener('change', function () {
       if (item.checked) {
         featuresChecked.push(item.id.slice(7));
       } else {
-        featuresChecked = featuresChecked.filter(function(element) {
-          if (element !== item.id.slice(7)) {
-            return element;
-          }
+        featuresChecked = featuresChecked.filter(function (element) {
+          return element !== item.id.slice(7);
         });
       }
-      filteredArray[4] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-      var tempArray = [];
-      featuresChecked.forEach(function (elem) {
-        window.pin.adverts.forEach(function (item, index) {
-          if (item.offer.features.indexOf(elem) >= 0) {
-            tempArray.push(index);
-          }
-        });
-        filteredArray[4] = findSame(filteredArray[4], tempArray);
-        tempArray = [];
-      });
-      window.debounce(updatePinElements(getIdsArray()))
+      getFeaturesFilteredArray();
+      window.debounce(updatePinElements(getIdsArray()));
     });
-  })
+  });
 })();
