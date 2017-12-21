@@ -5,8 +5,9 @@
   var ENTER_KEYCODE = 13;
 
   window.pin = {
+    adverts: null,
     renderAllPins: function (adv) {
-      window.backend.adverts = adv;
+      window.pin.adverts = adv;
       var fragmentElement = document.createDocumentFragment();
 
       for (var i = 0; i < adv.length; i++) {
