@@ -5,9 +5,21 @@
   var mainPinElement = document.querySelector('.map__pin--main');
   var addressElement = document.querySelector('#address');
 
+  function errorHandler(errorMessage) {
+    var nodeElement = document.createElement('div');
+    nodeElement.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
+    nodeElement.style.position = 'fixed';
+    nodeElement.style.left = 0;
+    nodeElement.style.right = 0;
+    nodeElement.style.fontSize = '30px';
+
+    nodeElement.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', nodeElement);
+  }
+
   function showMap() {
     document.querySelector('.map').classList.remove('map--faded');
-    window.pin.renderAllPins(window.data.adverts);
+    window.backend.load(window.pin.renderAllPins, errorHandler);
   }
 
   function unhidePage() {

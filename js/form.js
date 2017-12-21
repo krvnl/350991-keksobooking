@@ -10,13 +10,17 @@
   var priceElement = document.querySelector('#price');
 
   var noticeFormElement = document.querySelector('.notice__form');
+  var formElements = noticeFormElement.querySelectorAll('.form__element');
+  var defaultElements = document.querySelectorAll('.form__element select, .form__element textarea, .form__element input[type="text"], .form__element input[type="number"]');
 
   window.form = {
     showForm: function () {
       noticeFormElement.classList.remove('notice__form--disabled');
-      var formElements = noticeFormElement.querySelectorAll('.form__element');
       for (var i = 0; i < formElements.length; i++) {
         formElements[i].removeAttribute('disabled');
+      }
+      for (var j = 0; j < defaultElements.length; j++) {
+        defaultElements[j].defaultValue = defaultElements[j].value;
       }
     }
   };
@@ -27,6 +31,24 @@
 
   function syncMinValue(element, value) {
     element.min = value;
+  }
+
+  function setDefaultValues() {
+    for (var i = 0; i < defaultElements.length; i++) {
+      defaultElements[i].value = defaultElements[i].defaultValue;
+    }
+  }
+
+  function errorHandler(errorMessage) {
+    var nodeElement = document.createElement('DIV');
+    nodeElement.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
+    nodeElement.style.position = 'fixed';
+    nodeElement.style.left = 0;
+    nodeElement.style.right = 0;
+    nodeElement.style.fontSize = '30px';
+
+    nodeElement.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', nodeElement);
   }
 
   // Автоматическое изменение полей заезда/выезда
@@ -43,15 +65,19 @@
 
   var submitElement = document.querySelector('.form__submit');
   // Проверка правильности заполнения полей перед отправкой формы
-  submitElement.addEventListener('click', onSubmitClick);
-
-  function onSubmitClick() {
+  submitElement.addEventListener('click', function (event) {
+    event.preventDefault();
+    var validData = true;
     for (var i = 0; i < inputValidateElements.length; i++) {
       if (!inputValidateElements[i].validity.valid) {
         inputValidateElements[i].style.border = '3px solid red';
+        validData = false;
       } else {
         inputValidateElements[i].style.border = '';
       }
     }
-  }
+    if (validData) {
+      window.backend.save(new FormData(noticeFormElement), setDefaultValues, errorHandler);
+    }
+  });
 })();
